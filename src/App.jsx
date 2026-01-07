@@ -52,6 +52,12 @@ export default function App() {
 
     if (result.status !== "ok") {
       console.error("Erro API:", result.message);
+      
+       if (result.message === "Item esgotado") {
+          alert("Item esgotado");
+          window.location.reload();
+        }
+
       return;
     }
 
