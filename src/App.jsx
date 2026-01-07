@@ -77,53 +77,76 @@ export default function App() {
   }
 
    return (
-    <main style={{ maxWidth: 600, margin: "auto", fontFamily: "sans-serif" }}>
-      <h1>🎁 Wishlist</h1>
+    <div
+      style={{
+        minHeight: "100vh",
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "flex-start",
+        paddingTop: 40,
+        fontFamily: "sans-serif"
+      }}
+    >
+      <main style={{ width: "100%", maxWidth: 600 }}>
+        <h1 style={{ textAlign: "center", marginBottom: 24 }}>
+          🎁 Wishlist
+        </h1>
 
-      <ul style={{ padding: 0 }}>
-        {items.map(item => {
-          const esgotado = item.quantidade === 0;
-          const comprando = buyingId === item.id;
+        <ul style={{ padding: 0, margin: 0 }}>
+          {items.map(item => {
+            const esgotado = item.quantidade === 0;
 
-          return (
-            <li
-              key={item.id}
-              style={{
-                listStyle: "none",
-                marginBottom: 12,
-                opacity: esgotado ? 0.6 : 1
-              }}
-            >
-              <a
-                href={item.link}
-                target="_blank"
-                rel="noreferrer"
+            return (
+              <li
+                key={item.id}
                 style={{
-                  textDecoration: esgotado ? "line-through" : "none",
-                  marginRight: 8
+                  listStyle: "none",
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "space-between",
+                  padding: "12px 0",
+                  borderBottom: "1px solid #eee",
+                  opacity: esgotado ? 0.6 : 1
                 }}
               >
-                {item.nome}
-              </a>
+                <div style={{ flex: 1 }}>
+                  <a
+                    href={item.link}
+                    target="_blank"
+                    rel="noreferrer"
+                    style={{
+                      textDecoration: esgotado ? "line-through" : "none",
+                      // color: "#000",
+                      fontWeight: 500
+                    }}
+                  >
+                    {item.nome}
+                  </a>
 
-              <span style={{ marginRight: 8 }}>
-                (restam {item.quantidade})
-              </span>
+                  <div style={{ fontSize: 14, color: "#555" }}>
+                    restam {item.quantidade}
+                  </div>
+                </div>
 
-              <button
-                disabled={esgotado || comprando}
-                style={{
-                  cursor: esgotado ? "not-allowed" : "pointer",
-                  opacity: esgotado ? 0.5 : 1
-                }}
-                onClick={() => comprar(item.id)}
-              >
-                {comprando ? "Comprando..." : "Comprar 1"}
-              </button>
-            </li>
-          );
-        })}
-      </ul>
-    </main>
+                <button
+                  onClick={() => comprar(item.id)}
+                  disabled={esgotado || buyingId === item.id}
+                  style={{
+                    marginLeft: 16,
+                    padding: "6px 12px",
+                    cursor:
+                      esgotado || buyingId === item.id
+                        ? "not-allowed"
+                        : "pointer"
+                  }}
+                >
+                  {buyingId === item.id ? "Comprando..." : "Comprar 1"}
+                </button>
+              </li>
+            );
+          })}
+        </ul>
+      </main>
+    </div>
   );
 }
