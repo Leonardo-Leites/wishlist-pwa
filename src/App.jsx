@@ -32,51 +32,46 @@ export default function App() {
     }
   }
 
- async function comprar(id) {
-  try {
-    setBuyingId(id);
+  async function comprar(id) {
+    try {
+      setBuyingId(id);
 
-    const response = await fetch(API_URL, {
-      method: "POST",
-      body: JSON.stringify({
-        token: TOKEN,
-        id: id,
-        action: "buy"
-      })
-    });
+      const response = await fetch(API_URL, {
+        method: "POST",
+        body: JSON.stringify({
+          token: TOKEN,
+          id: id,
+          action: "buy"
+        })
+      });
 
-    if (!response.ok) {
-      console.error("Erro HTTP:", response.status);
-      return;
-    }
+      const result = await response.json();
 
-    const result = await response.json();
+      if (result.status !== "ok") {
+        console.error("Erro API:", result.message);
 
-    if (result.status !== "ok") {
-      console.error("Erro API:", result.message);
-      
-       if (result.message === "Item esgotado") {
+        if (result.message === "Item esgotado") {
           alert("Item esgotado");
-          window.location.reload();
+          await carregar();
         }
 
-      return;
-    }
+        return;
+      }
 
-    await carregar();
+      await carregar();
 
-  } catch (err) {
-    console.error("Erro no fetch:", err);
-  }finally {
+    } catch (err) {
+      console.error("Erro no fetch:", err);
+    } finally {
       setBuyingId(null);
+    }
   }
-}
 
   if (loading) {
-    return <p>Carregando...</p>;
+    return <p style={{ textAlign: "center" }}>Carregando...</p>;
   }
 
-   return (
+  return (
     <div
       style={{
         minHeight: "100vh",
@@ -87,12 +82,19 @@ export default function App() {
         fontFamily: "sans-serif"
       }}
     >
-      <main style={{ width: "100%", maxWidth: 600 }}>
-        <h1 style={{ textAlign: "center", marginBottom: 24 }}>
-          🎁 Wishlist
-        </h1>
+      <main
+        style={{
+          maxWidth: 640,
+          width: "100%",
+          margin: "0 auto",
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center"
+        }}
+      >
+        <h1 style={{ marginBottom: 24 }}>🎁 Wishlist</h1>
 
-        <ul style={{ padding: 0, margin: 0 }}>
+        <ul style={{ padding: 0, margin: 0, width: "100%" }}>
           {items.map(item => {
             const esgotado = item.quantidade === 0;
 
@@ -103,45 +105,73 @@ export default function App() {
                   listStyle: "none",
                   display: "flex",
                   alignItems: "center",
-                  justifyContent: "space-between",
-                  padding: "12px 0",
-                  borderBottom: "1px solid #eee",
-                  opacity: esgotado ? 0.6 : 1
+                  justifyContent: "center",
+                  padding: "12px 0"
                 }}
               >
-                <div style={{ flex: 1 }}>
-                  <a
-                    href={item.link}
-                    target="_blank"
-                    rel="noreferrer"
-                    style={{
-                      textDecoration: esgotado ? "line-through" : "none",
-                      // color: "#000",
-                      fontWeight: 500
-                    }}
-                  >
-                    {item.nome}
-                  </a>
-
-                  <div style={{ fontSize: 14, color: "#555" }}>
-                    restam {item.quantidade}
-                  </div>
-                </div>
-
-                <button
-                  onClick={() => comprar(item.id)}
-                  disabled={esgotado || buyingId === item.id}
+                {/* CARD */}
+                <div
                   style={{
-                    marginLeft: 16,
-                    padding: "6px 12px",
-                    cursor:
-                      esgotado || buyingId === item.id
-                        ? "not-allowed"
-                        : "pointer"
+                    width: "100%",
+                    maxWidth: 560,
+                    display: "flex",
+                    alignItems: "center",
+                    gap: 16,
+                    padding: 12,
+                    border: "1px solid #eee",
+                    borderRadius: 8,
+                    opacity: esgotado ? 0.6 : 1
                   }}
                 >
-                  {buyingId === item.id ? "Comprando..." : "Comprar 1"}
-                </button>
+                  {/* IMAGEM */}
+                  {item.imagem && (
+                    <img
+                      src={item.imagem}
+                      alt={item.nome}
+                      style={{
+                        width: 64,
+                        height: 64,
+                        objectFit: "cover",
+                        borderRadius: 8
+                      }}
+                    />
+                  )}
+
+                  {/* TEXTO */}
+                  <div style={{ flex: 1 }}>
+                    <a
+                      href={item.link}
+                      target="_blank"
+                      rel="noreferrer"
+                      style={{
+                        textDecoration: esgotado ? "line-through" : "none",
+                        // color: "#000",
+                        fontWeight: 500
+                      }}
+                    >
+                      {item.nome}
+                    </a>
+
+                    <div style={{ fontSize: 14, color: "#555" }}>
+                      restam {item.quantidade}
+                    </div>
+                  </div>
+
+                  {/* BOTÃO */}
+                  <button
+                    onClick={() => comprar(item.id)}
+                    disabled={esgotado || buyingId === item.id}
+                    style={{
+                      padding: "6px 12px",
+                      cursor:
+                        esgotado || buyingId === item.id
+                          ? "not-allowed"
+                          : "pointer"
+                    }}
+                  >
+                    {buyingId === item.id ? "Comprando..." : "Comprar 1"}
+                  </button>
+                </div>
               </li>
             );
           })}
