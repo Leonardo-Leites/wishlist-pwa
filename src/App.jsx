@@ -34,6 +34,8 @@ export default function App() {
 
  async function comprar(id) {
   try {
+    setBuyingId(id);
+
     const response = await fetch(API_URL, {
       method: "POST",
       body: JSON.stringify({
@@ -65,6 +67,8 @@ export default function App() {
 
   } catch (err) {
     console.error("Erro no fetch:", err);
+  }finally {
+      setBuyingId(null);
   }
 }
 
@@ -72,13 +76,14 @@ export default function App() {
     return <p>Carregando...</p>;
   }
 
-  return (
+   return (
     <main style={{ maxWidth: 600, margin: "auto", fontFamily: "sans-serif" }}>
       <h1>🎁 Wishlist</h1>
 
       <ul style={{ padding: 0 }}>
         {items.map(item => {
           const esgotado = item.quantidade === 0;
+          const comprando = buyingId === item.id;
 
           return (
             <li
@@ -106,10 +111,14 @@ export default function App() {
               </span>
 
               <button
-                disabled={esgotado || buyingId === item.id}
+                disabled={esgotado || comprando}
+                style={{
+                  cursor: esgotado ? "not-allowed" : "pointer",
+                  opacity: esgotado ? 0.5 : 1
+                }}
                 onClick={() => comprar(item.id)}
               >
-                {buyingId === item.id ? "Comprando..." : "Comprar 1"}
+                {comprando ? "Comprando..." : "Comprar 1"}
               </button>
             </li>
           );
