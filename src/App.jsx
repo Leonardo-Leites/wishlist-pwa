@@ -92,7 +92,7 @@ export default function App() {
           alignItems: "center"
         }}
       >
-        <h1 style={{ marginBottom: 24 }}>🎁 Wishlist</h1>
+        <h1 style={{ marginBottom: 24 }}>🎁 Minha casa minha vida</h1>
 
         <ul style={{ padding: 0, margin: 0, width: "100%" }}>
           {items.map(item => {
