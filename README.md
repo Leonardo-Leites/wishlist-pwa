@@ -3,7 +3,7 @@
 Uma wishlist simples e funcional, integrada ao **Google Sheets** como backend e publicada online via **Vercel**.  
 Permite visualizar itens, acessar links externos e registrar compras de forma segura, evitando compras duplicadas.
 
-🔗 **Projeto online:** *(adicione aqui a URL da Vercel)*
+🔗 **Projeto online:** *https://wishlist-pwa.vercel.app/*
 
 ---
 
@@ -23,11 +23,11 @@ Permite visualizar itens, acessar links externos e registrar compras de forma se
 
 ## 🧱 Arquitetura
 
-- React (Vercel)
-- ↓ GET / POST
-- Google Apps Script (API)
-- ↓
-- Google Sheets (Banco de dados)
+React (Vercel)
+→ GET / POST
+Google Apps Script (API)
+→
+Google Sheets (Banco de dados)
 
 
 ---
@@ -56,11 +56,9 @@ As posições das colunas são usadas diretamente no script.
 
 Retorna todos os itens da wishlist.
 
-```http
-GET /exec
-
 ### POST
 
+```http
 Registra a compra de 1 unidade de um item.
 {
   "token": "SEU_TOKEN",
@@ -81,7 +79,7 @@ Respostas possíveis
   "status": "error",
   "message": "Item esgotado"
 }
-
+```
 # React + Vite
 
 This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
