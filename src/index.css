@@ -16,7 +16,6 @@
 html, body, #root {
   width: 100%;
   height: 100%;
-  margin: 0;
 }
 
 a {
@@ -59,6 +58,12 @@ button:hover {
 button:focus,
 button:focus-visible {
   outline: 4px auto -webkit-focus-ring-color;
+}
+
+@media screen and (max-width: 480px) {
+  body {
+    padding: 20px;
+  }
 }
 
 @media (prefers-color-scheme: light) {
