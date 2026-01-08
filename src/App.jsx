@@ -92,8 +92,15 @@ export default function App() {
           alignItems: "center"
         }}
       >
-        <h1 style={{ marginBottom: 24 }}>🎁 Minha casa minha vida</h1>
-
+        <h1 style={{ marginBottom: 24 }}>🎁 Minha Casa, Minha Vida</h1>
+        <h4 style={{ textAlign: "center" }}>Oi! 👋 <br />
+            Somos a Bibi e o Léo.
+            Este é o nosso Minha Casa, Minha Vida — só que sem governo e com o apoio financeiro (e fundamental) de vocês.
+            Abaixo está a lista do que precisamos pra terminar de montar a casa nova. Tudo tem link e descrição. <br />
+            Não achou nada que caiba no bolso?
+            Sem problemas: aceitamos Pix 😶‍🌫️ 51998767740 ou 51997082811. <br />
+            Obrigada por ajudarem esse lar a existir ❤️ <br />
+            Bibi & Léo</h4>
         <ul style={{ padding: 0, margin: 0, width: "100%" }}>
           {items.map(item => {
             const esgotado = item.quantidade === 0;
@@ -153,7 +160,7 @@ export default function App() {
                     </a>
 
                     <div style={{ fontSize: 14, color: "#555" }}>
-                      restam {item.quantidade}
+                      meta {item.quantidade}
                     </div>
                   </div>
 
