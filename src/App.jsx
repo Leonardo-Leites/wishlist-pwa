@@ -22,7 +22,7 @@ export default function App() {
       setItems(
         data.map((item) => ({
           ...item,
-          id: Number(item.id), 
+          id: Number(item.id),
           quantidade: Number(item.quantidade),
         }))
       );
@@ -109,10 +109,21 @@ export default function App() {
 
         <h4 style={{ textAlign: "center" }}>
           Oi! 👋 <br />
-          Somos a Bibi e o Léo. Este é o nosso Minha Casa, Minha Vida — só que
-          sem governo e com o apoio financeiro (e fundamental) de vocês. Abaixo
-          está a lista do que precisamos pra terminar de montar a casa nova.
-          Tudo tem link e descrição. <br />
+          Aqui é a Bibi e o Léo.
+          Este é o nosso Minha Casa, Minha Vida, só que sem governo e com o apoio financeiro (e fundamental) de vocês. 
+          💛 <br />
+          Aqui você encontra uma lista de itens que ainda precisamos. Ao clicar
+          no nome do item, você será redirecionado para o link do produto que
+          encontramos com o melhor preço no momento. <br />
+          <br />
+          Se você quiser ajudar comprando algum item, é só clicar em
+          <strong> “Comprar 1”</strong>. Isso vai atualizar a lista e avisar a
+          gente (e as outras pessoas) que alguém demonstrou a intenção de compra
+          daquele item. <br />
+          Importante: este site <strong>não realiza a compra</strong> e não
+          garante reserva, ele serve apenas como uma forma de organização e
+          comunicação para evitar compras duplicadas 😊 <br />
+          <br />
           Não achou nada que caiba no bolso? Sem problemas: aceitamos Pix 😶‍🌫️
           51998767740 ou 51997082811. <br />
           Obrigada por ajudarem esse lar a existir ❤️ <br />
