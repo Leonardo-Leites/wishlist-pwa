@@ -7,6 +7,7 @@ export default function App() {
   const [items, setItems] = useState([]);
   const [loading, setLoading] = useState(true);
   const [buyingId, setBuyingId] = useState(null);
+  const [tagSelecionada, setTagSelecionada] = useState("todas");
 
   useEffect(() => {
     carregar();
@@ -19,9 +20,10 @@ export default function App() {
       const data = await res.json();
 
       setItems(
-        data.map(item => ({
+        data.map((item) => ({
           ...item,
-          quantidade: Number(item.quantidade)
+          id: Number(item.id), 
+          quantidade: Number(item.quantidade),
         }))
       );
     } catch (err) {
@@ -41,8 +43,8 @@ export default function App() {
         body: JSON.stringify({
           token: TOKEN,
           id: id,
-          action: "buy"
-        })
+          action: "buy",
+        }),
       });
 
       const result = await response.json();
@@ -59,13 +61,24 @@ export default function App() {
       }
 
       await carregar();
-
     } catch (err) {
       console.error("Erro no fetch:", err);
     } finally {
       setBuyingId(null);
     }
   }
+
+  // 🔽 TAGS ÚNICAS
+  const tags = [
+    "todas",
+    ...new Set(items.map((item) => item.tag).filter(Boolean)),
+  ];
+
+  // 🔽 FILTRO
+  const itemsFiltrados =
+    tagSelecionada === "todas"
+      ? items
+      : items.filter((item) => item.tag === tagSelecionada);
 
   if (loading) {
     return <p style={{ textAlign: "center" }}>Carregando...</p>;
@@ -79,7 +92,7 @@ export default function App() {
         justifyContent: "center",
         alignItems: "flex-start",
         paddingTop: 40,
-        fontFamily: "sans-serif"
+        fontFamily: "sans-serif",
       }}
     >
       <main
@@ -89,20 +102,42 @@ export default function App() {
           margin: "0 auto",
           display: "flex",
           flexDirection: "column",
-          alignItems: "center"
+          alignItems: "center",
         }}
       >
         <h1 style={{ marginBottom: 24 }}>🎁 Minha Casa, Minha Vida</h1>
-        <h4 style={{ textAlign: "center" }}>Oi! 👋 <br />
-            Somos a Bibi e o Léo.
-            Este é o nosso Minha Casa, Minha Vida — só que sem governo e com o apoio financeiro (e fundamental) de vocês.
-            Abaixo está a lista do que precisamos pra terminar de montar a casa nova. Tudo tem link e descrição. <br />
-            Não achou nada que caiba no bolso?
-            Sem problemas: aceitamos Pix 😶‍🌫️ 51998767740 ou 51997082811. <br />
-            Obrigada por ajudarem esse lar a existir ❤️ <br />
-            Bibi & Léo</h4>
+
+        <h4 style={{ textAlign: "center" }}>
+          Oi! 👋 <br />
+          Somos a Bibi e o Léo. Este é o nosso Minha Casa, Minha Vida — só que
+          sem governo e com o apoio financeiro (e fundamental) de vocês. Abaixo
+          está a lista do que precisamos pra terminar de montar a casa nova.
+          Tudo tem link e descrição. <br />
+          Não achou nada que caiba no bolso? Sem problemas: aceitamos Pix 😶‍🌫️
+          51998767740 ou 51997082811. <br />
+          Obrigada por ajudarem esse lar a existir ❤️ <br />
+          Bibi & Léo
+        </h4>
+
+        {/* DROPDOWN */}
+        <select
+          value={tagSelecionada}
+          onChange={(e) => setTagSelecionada(e.target.value)}
+          style={{
+            margin: "24px 0",
+            padding: "6px 12px",
+            borderRadius: 6,
+          }}
+        >
+          {tags.map((tag) => (
+            <option key={tag} value={tag}>
+              {tag}
+            </option>
+          ))}
+        </select>
+
         <ul style={{ padding: 0, margin: 0, width: "100%" }}>
-          {items.map(item => {
+          {itemsFiltrados.map((item) => {
             const esgotado = item.quantidade === 0;
 
             return (
@@ -113,7 +148,7 @@ export default function App() {
                   display: "flex",
                   alignItems: "center",
                   justifyContent: "center",
-                  padding: "12px 0"
+                  padding: "12px 0",
                 }}
               >
                 {/* CARD */}
@@ -127,7 +162,7 @@ export default function App() {
                     padding: 12,
                     border: "1px solid #eee",
                     borderRadius: 8,
-                    opacity: esgotado ? 0.6 : 1
+                    opacity: esgotado ? 0.6 : 1,
                   }}
                 >
                   {/* IMAGEM */}
@@ -139,7 +174,7 @@ export default function App() {
                         width: 64,
                         height: 64,
                         objectFit: "cover",
-                        borderRadius: 8
+                        borderRadius: 8,
                       }}
                     />
                   )}
@@ -152,8 +187,7 @@ export default function App() {
                       rel="noreferrer"
                       style={{
                         textDecoration: esgotado ? "line-through" : "none",
-                        // color: "#000",
-                        fontWeight: 500
+                        fontWeight: 500,
                       }}
                     >
                       {item.nome}
@@ -173,7 +207,7 @@ export default function App() {
                       cursor:
                         esgotado || buyingId === item.id
                           ? "not-allowed"
-                          : "pointer"
+                          : "pointer",
                     }}
                   >
                     {buyingId === item.id ? "Comprando..." : "Comprar 1"}
