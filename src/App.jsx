@@ -35,9 +35,13 @@ export default function App() {
   }
 
   async function comprar(id) {
+
     try {
       setBuyingId(id);
 
+      if (!confirm("Tem certeza que deseja comprar este item?")) {
+        return;
+      }
       const response = await fetch(API_URL, {
         method: "POST",
         body: JSON.stringify({
